@@ -83,7 +83,7 @@ class Frame:
     def hasPrevious(self):
         return not (self.previous() is None)
 
-    def previous(self) -> 'Frame' | None:
+    def previous(self):
         """Return the previous frame in the sequence
         :return Frame:
         """
@@ -94,7 +94,7 @@ class Frame:
     def hasNext(self) -> bool:
         return not (self.next is None)
 
-    def next(self) -> 'Frame' | None:
+    def next(self):
         """ Return the next frame in the sequence
         :return Frame: 
         """

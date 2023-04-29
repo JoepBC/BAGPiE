@@ -12,6 +12,7 @@ class Operation(IOperation):
         self._progressFrame = 0
         self.attachEasesToAnimation = attachEasesToAnimation
         self.scaleToAnimationDimensions = scaleToAnimationDimensions
+        self.eases: Dict[Ease] = {}
 
     def getProgress(self):
         return self._progressFrame.fraction()
@@ -49,11 +50,11 @@ class Operation(IOperation):
         pass
 
     def _performAttachEasesToAnimation(self, animation: BAGPiE):
-        for ease in self.getAllEases():
-            ease.setFractionFunc(self.getProgress)
+        for index in self.eases:
+            self.eases[index].setFractionFunc(self.getProgress)
 
     def _performScaleToAnimationDimensions(self, animation: BAGPiE):
-        self.setScaleFactors(animation.dimensions)
+        self.setScaleFactors(animation.dimensions[0], animation.dimensions[1])
 
     def drawOnAnimation(self, animation: BAGPiE):
         if (self.attachEasesToAnimation):
@@ -61,9 +62,5 @@ class Operation(IOperation):
         if (self.scaleToAnimationDimensions):
             self._performScaleToAnimationDimensions(animation)
 
-    def getAllEases(self):
+    def setScaleFactors(self, x: float, y: float):
         raise Exception("Subclass responsibility")
-
-    def setScaleFactors(self, dimsFac: tuple[float, float]):
-        raise Exception("Subclass responsibility")
-
