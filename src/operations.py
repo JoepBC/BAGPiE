@@ -1,4 +1,4 @@
-from ease import *
+from relaters import *
 from bagpie import *
 
 
@@ -8,11 +8,11 @@ class Operation(IOperation):
     operationOnAnimationCalls = []
     operationOnEveryFrameCalls = []
 
-    def __init__(self, attachEasesToAnimation=True, scaleToAnimationDimensions=True) -> None:
+    def __init__(self, attachRelatersToAnimation=True, scaleToAnimationDimensions=True) -> None:
         self._progressFrame = 0
-        self.attachEasesToAnimation = attachEasesToAnimation
+        self.attachRelatersToAnimation = attachRelatersToAnimation
         self.scaleToAnimationDimensions = scaleToAnimationDimensions
-        self.eases: Dict[Ease] = {}
+        self.relaters: Dict[Relater] = {}
 
     def getProgress(self):
         return self._progressFrame.fraction()
@@ -49,16 +49,16 @@ class Operation(IOperation):
         """
         pass
 
-    def _performAttachEasesToAnimation(self, animation: BAGPiE):
-        for index in self.eases:
-            self.eases[index].setFractionFunc(self.getProgress)
+    def _performAttachRelatersToAnimation(self, animation: BAGPiE):
+        for index in self.relaters:
+            self.relaters[index].setFractionFunc(self.getProgress)
 
     def _performScaleToAnimationDimensions(self, animation: BAGPiE):
         self.setScaleFactors(animation.dimensions[0], animation.dimensions[1])
 
     def drawOnAnimation(self, animation: BAGPiE):
-        if (self.attachEasesToAnimation):
-            self._performAttachEasesToAnimation(animation)
+        if (self.attachRelatersToAnimation):
+            self._performAttachRelatersToAnimation(animation)
         if (self.scaleToAnimationDimensions):
             self._performScaleToAnimationDimensions(animation)
 
