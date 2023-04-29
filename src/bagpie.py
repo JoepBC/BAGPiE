@@ -15,7 +15,7 @@ class IOperation:
 
 class BAGPiE:
 
-    def __init__(self, dimensions: tuple[float, float] = (128, 128), numberOfFrames: int = 164, frameRate=10, loopCount=1) -> None:
+    def __init__(self, dimensions: tuple[float, float] = (128, 128), numberOfFrames: int = 164, bgColor=(0, 0, 0), frameRate=10, loopCount=1) -> None:
         """! An animation that countains some frames to be filled later.
         @param dimensions: an [int, int] array with the width and height of the image.
         """
@@ -24,10 +24,20 @@ class BAGPiE:
         self.numberOfFrames = numberOfFrames
         self.frameRate = frameRate
         self.operations: List[IOperation] = []
-        self.createFrames()
         self.currentFrame = None
         self.loopCount = loopCount
+        self.bgColor = bgColor
+        self.createFrames()
         print("Thank you for using BAGPiE: BAGPiE Animated Gif Programmable Interface Experience.")
+
+    def ao(self, anOperation: IOperation):
+        """ 'Add Operation (ao), optimised alias for 'operation.append', returning self for chain-calling
+
+        :param IOperation anOperation: The operation to add to the chain
+        :return BAGPiE: returns self, enable calling a chain of ao's.
+        """
+        self.operations.append(anOperation)
+        return self
 
     def createFrames(self):
         """!
@@ -37,7 +47,7 @@ class BAGPiE:
         """
         self.frames: List[Frame] = []
         for i in range(self.numberOfFrames):
-            self.frames.append(Frame(self, i))
+            self.frames.append(Frame(self, i, bgColor=self.bgColor))
 
     def exportGif(self, outFileName: str):
         """!
@@ -128,7 +138,7 @@ class Frame:
         """
         self.ellipse(x-r, y+r, x+r, y-r, color)
 
-    def withinImage(self, x: float, y: float) -> tuple[int,int]:
+    def withinImage(self, x: float, y: float) -> tuple[int, int]:
         """Checks whether coordinates are within the boundaries of the image, and puts them right within that boundaries if not
 
         :param float x:

@@ -43,11 +43,13 @@ class Operation(IOperation):
         pass
 
     def drawOnFrame(self, frame: Frame):
+
         """! 
         Empty method, available for implementation at subclass
         @param frame: the frame to be modified
         """
-        pass
+        # Printing frame ID's as a progress indicator
+        print(str(frame.id), end='-')
 
     def _performAttachRelatersToAnimation(self, animation: BAGPiE):
         for index in self.relaters:

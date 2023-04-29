@@ -17,8 +17,6 @@ class CircleOperation(Operation):
         self.relaters['radius'].factor = max(x,y)
 
     def drawOnFrame(self, frame: Frame):
-        # Printing frame ID's as a progress indicator
-        print(str(frame.id), end='-')
         frame.circle(self.relaters['x'].value(), self.relaters['y'].value(),
                      self.relaters['radius'].value(), self.relaters['color'].intsValue())
 
