@@ -46,6 +46,9 @@ class RelateFuncs:
         return (1 + math.sin(-math.pi*0.5+input*2*math.pi))/2
 
 class AbstractRelater:
+    """ A Related is a value that varies with a given fraction according to a given RelateFunc 
+    """  
+
     def __init__(self, valueFrom, valueTo,  fractionFunc=(lambda: 0), factor=1, relateFunc=RelateFuncs.identity) -> None:
         self._fractionFunc = fractionFunc
         self.factor = factor
@@ -70,6 +73,8 @@ class AbstractRelater:
 
 
 class Relater(AbstractRelater):
+    """ A 'normal' Relater is a scalar that relates according to a given RelateFunc
+    """
 
     def __init__(self, valueFrom: float, valueTo: float = None, fractionFunc=(lambda: 0), factor=1, relateFunc=RelateFuncs.identity) -> None:
         super().__init__(valueFrom, valueTo, fractionFunc, factor, relateFunc)

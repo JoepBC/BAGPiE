@@ -9,7 +9,7 @@ class Operation(IOperation):
     operationOnEveryFrameCalls = []
 
     def __init__(self, attachRelatersToAnimation=True, scaleToAnimationDimensions=True) -> None:
-        self._progressFrame = 0
+        self._progressFrame = None
         self.attachRelatersToAnimation = attachRelatersToAnimation
         self.scaleToAnimationDimensions = scaleToAnimationDimensions
         self.relaters: Dict[Relater] = {}

@@ -60,6 +60,7 @@ class BAGPiE:
         images = self._getImages()
         images[0].save(outFileName, save_all=True,
                        append_images=images[1:], optimize=False, duration=self.frameRate, loop=self.loopCount)
+        return self
 
     def _getImages(self):
         imageList: List[Image.Image] = []
@@ -71,6 +72,9 @@ class BAGPiE:
         :return int: total amount of frames
         """
         return self.frames.__len__()
+
+
+""" End class BAGPiE """
 
 
 class Frame:
@@ -127,6 +131,23 @@ class Frame:
         draw.ellipse(
             vecTuple2,
             fill=color)
+
+    def line(self, x1: float, y1: float, x2: float, y2: float, color: tuple[int, int, int]):
+        """Draw a line from x1,y2 to x2,y2
+
+        :param float x1: v1,x
+        :param float y1: v1,y
+        :param float x2: v2,x
+        :param float y2: v2,y
+        :param tuple[int, int, int] color: RGB color
+        """
+
+        vecTuple2 = (x1, self.c2r(y1),
+                     x2, self.c2r(y2))
+        draw = ImageDraw.Draw(self.im)
+        draw.line(vecTuple2,
+            fill=color)
+
 
     def circle(self, x: float, y: float, r: float, color: tuple[float, float, float]):
         """Wrapper around self.ellipse
