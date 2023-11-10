@@ -20,7 +20,9 @@ class LineOperation(Operation):
         self.relaters['y2'].factor = y
 
     def drawOnFrame(self, frame: Frame):
-        print("DL"+str(frame.id))
+        Operation.drawOnFrame(self, frame)
+        #print("DL"+str(frame.id)+";".join(str(x) for x in frame.getPixel(5,5)))
+        
         frame.line(self.relaters['x1'].value(), self.relaters['y1'].value(),
                    self.relaters['x2'].value(), self.relaters['y2'].value(), self.relaters['color'].intsValue())
 
@@ -42,6 +44,7 @@ class CircleOperation(Operation):
         self.relaters['radius'].factor = max(x, y)
 
     def drawOnFrame(self, frame: Frame):
+        Operation.drawOnFrame(self, frame)
         frame.circle(self.relaters['x'].value(), self.relaters['y'].value(),
                      self.relaters['radius'].value(), self.relaters['color'].intsValue())
 
@@ -57,10 +60,10 @@ class SnakeOperation(CircleOperation):
 
     def drawOnFrame(self, frame: Frame, tail: int = None, tailFrame: Frame = None):
         if (tail is None):
-            print(str(frame.id), end='-')
+            # Printing frame ID's as a progress indicator, only do for last drawing in the tail.
+            Operation.drawOnFrame(self, frame)
             tail = self.tailLength.value(frame.fraction())
             tailFrame = frame
-        # Printing frame ID's as a progress indicator
         tailFraction = tailFrame.fraction()
         self._progressFrame.circle(self.relaters['x'].value(tailFraction), self.relaters['y'].value(tailFraction),
                                    self.relaters['radius'].value(tailFraction), self.relaters['color'].intsValue(tailFraction))

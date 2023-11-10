@@ -8,9 +8,31 @@ import warnings
 
 
 class IOperation:
+
+    def __init__(self):
+        # First frame to include
+        self.fromFrame = -1
+        # Last frame to include
+        self.toFrame = -1
+
+    def setToFrame(self, toFrame: int):
+        self.toFrame = toFrame
+        return self
+
+    def setFromFrame(self, fromFrame: int):
+        self.fromFrame = fromFrame
+        return self
+
     def perform(self, onAnimation: 'BAGPiE'):
         # The default operation
         pass
+
+    def shouldOperateOnFrame(self, frameNumber: int):
+        if (self.fromFrame != -1) and (frameNumber < self.fromFrame):
+            return False
+        if (self.toFrame != -1) and (frameNumber > self.toFrame):
+            return False
+        return True
 
 
 class BAGPiE:
@@ -146,8 +168,7 @@ class Frame:
                      x2, self.c2r(y2))
         draw = ImageDraw.Draw(self.im)
         draw.line(vecTuple2,
-            fill=color)
-
+                  fill=color)
 
     def circle(self, x: float, y: float, r: float, color: tuple[float, float, float]):
         """Wrapper around self.ellipse
@@ -159,7 +180,7 @@ class Frame:
         """
         self.ellipse(x-r, y+r, x+r, y-r, color)
 
-    def withinImage(self, x: float, y: float) -> tuple[int, int]:
+    def pointIsInsideImage(self, x: float, y: float) -> tuple[int, int]:
         """Checks whether coordinates are within the boundaries of the image, and puts them right within that boundaries if not
 
         :param float x:
@@ -186,6 +207,6 @@ class Frame:
         print("x:"+str(x)+" y:"+str(y))
         x = math.ceil(x)-1
         y = self.c2r(y)
-        (x, y) = self.withinImage(x, y)
+        (x, y) = self.pointIsInsideImage(x, y)
         print("X:"+str(x)+" y:"+str(y))
         return self.im.getpixel((x, y))

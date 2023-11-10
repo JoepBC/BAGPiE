@@ -1,7 +1,7 @@
 from bagpie import *
 from relaters import *
 from operations_drawing import *
-from operations_filters import *
+import operations_filters as Filters
 
 bagpie = BAGPiE(dimensions=(400, 400), numberOfFrames=128,
                 bgColor=(255, 255, 255))
@@ -21,6 +21,9 @@ bagpie.ao(
     LineOperation(0, 0.5, 1, Relater(0,1), (255, 0, 255))
 ).exportGif('a.gif'
 ).ao(
-    ConvoluteOperation(maskMatrix=(
-        [1/8, 1/8, 1/8], [1/8, 0, 1/8], [1/8, 1/8, 1/8]))
+    Filters.ReRastarized(rgbFrames=[True,False, False]).setFromFrame(0).setToFrame(43)
+).ao(
+    Filters.ReRastarized(rgbFrames=[False, True, False]).setFromFrame(44).setToFrame(86)
+).ao(
+    Filters.ReRastarized(rgbFrames=[False, False, True]).setFromFrame(87).setToFrame(128)
 ).exportGif('a-c.gif')

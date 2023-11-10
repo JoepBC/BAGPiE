@@ -9,6 +9,7 @@ class Operation(IOperation):
     operationOnEveryFrameCalls = []
 
     def __init__(self, attachRelatersToAnimation=True, scaleToAnimationDimensions=True) -> None:
+        super().__init__()
         self._progressFrame = None
         self.attachRelatersToAnimation = attachRelatersToAnimation
         self.scaleToAnimationDimensions = scaleToAnimationDimensions
@@ -18,6 +19,7 @@ class Operation(IOperation):
         return self._progressFrame.fraction()
 
     def perform(self, onAnimation: BAGPiE):
+        print("\n"+self.__class__.__name__+">")
         # The default operation called by the AniMather object
         self.drawOnAnimation(onAnimation)
 
@@ -31,6 +33,8 @@ class Operation(IOperation):
     def performOnAllFrames(self, onAnimation: BAGPiE):
         for frame in onAnimation.frames:
             self._progressFrame = frame
+            if not self.shouldOperateOnFrame(frame.id):
+                continue
             self.drawOnFrame(frame)
             for operation in Operation.operationOnEveryFrameCalls:
                 operation(frame)
@@ -64,5 +68,8 @@ class Operation(IOperation):
         if (self.scaleToAnimationDimensions):
             self._performScaleToAnimationDimensions(animation)
 
+        """ When Relaters are translated from fractions to pixels, it must be defined
+            whether they should be related to the horizontal or vertical axis.
+        """ 
     def setScaleFactors(self, x: float, y: float):
         raise Exception("Subclass responsibility")
